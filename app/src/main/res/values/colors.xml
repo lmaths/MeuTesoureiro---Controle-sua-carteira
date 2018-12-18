@@ -3,4 +3,8 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="colorReceita">#00FF00 </color>
+    <color name="colorPrimaryReceita">#00BE8B</color>
+    <color name="colorPrimaryDespesa">#FF706A</color>
+    <color name="colorDespesa">#FF0000</color>
 </resources>

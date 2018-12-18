@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:theme="@style/Theme.Intro">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,7 +19,19 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.LoginActivity" />
-        <activity android:name=".activity.CadastroActivity"></activity>
+        <activity android:name=".activity.CadastroActivity" />
+        <activity
+            android:name=".activity.PrincipalActivity"
+            android:label="@string/title_activity_principal"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.ReceitasActivity"
+            android:theme="@style/receitaTheme"/>
+
+        <activity android:name=".activity.DespesasActivity"
+            android:theme="@style/despesaTheme"
+           />
+
     </application>
 
 </manifest>
