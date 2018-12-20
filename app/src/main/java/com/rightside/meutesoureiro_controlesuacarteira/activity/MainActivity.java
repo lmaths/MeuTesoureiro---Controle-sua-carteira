@@ -1,19 +1,14 @@
 package com.rightside.meutesoureiro_controlesuacarteira.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.heinrichreimersoftware.materialintro.app.IntroActivity;
 import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
 import com.rightside.meutesoureiro_controlesuacarteira.R;
-import com.rightside.meutesoureiro_controlesuacarteira.activity.CadastroActivity;
-import com.rightside.meutesoureiro_controlesuacarteira.activity.LoginActivity;
 import com.rightside.meutesoureiro_controlesuacarteira.config.ConfiguracaoFirebase;
-import com.rightside.meutesoureiro_controlesuacarteira.model.Usuario;
 
 public class MainActivity extends IntroActivity {
 
@@ -59,7 +54,12 @@ public class MainActivity extends IntroActivity {
 
         if ( autenticacao.getCurrentUser() != null ) {
             startActivity(new Intent(this, PrincipalActivity.class));
+            abrirTelaPrincipal();
             }
 
+    }
+
+    public void abrirTelaPrincipal(){
+        startActivity(new Intent(this, PrincipalActivity.class));
     }
 }

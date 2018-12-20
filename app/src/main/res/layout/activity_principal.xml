@@ -5,54 +5,57 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.PrincipalActivity"
-    tools:ignore="ResAuto">
+    tools:context=".activity.PrincipalActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="0dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="@android:color/holo_red_dark"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_principal" />
 
-
     <com.github.clans.fab.FloatingActionMenu
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="10dp"
+        fab:menu_icon="@drawable/ic_adicionar_branco_24dp"
         app:menu_colorNormal="@color/colorAccent"
-        app:menu_colorPressed="@color/colorAccent">
+        app:menu_colorPressed="@color/colorAccent"
+        >
 
         <com.github.clans.fab.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/menu_despesa"
             android:onClick="adicionarDespesa"
-            android:src="@drawable/ic_add_black_24dp"
-            fab:fab_size="mini"
-            fab:fab_label="Despesa"/>
-
-        <com.github.clans.fab.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/ic_adicionar_branco_24dp"
+            fab:fab_colorNormal="@color/colorPrimaryDespesa"
+            fab:fab_label="Despesa"
+            fab:fab_size="mini"
+            />
+
+        <com.github.clans.fab.FloatingActionButton
             android:id="@+id/menu_receita"
             android:onClick="adicionarReceita"
-            android:src="@drawable/ic_add_black_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_adicionar_branco_24dp"
+            fab:fab_colorNormal="@color/colorPrimaryReceita"
+            fab:fab_label="Receita"
             fab:fab_size="mini"
-            fab:fab_label="Receita"/>
-
+            />
 
     </com.github.clans.fab.FloatingActionMenu>
-    
 
 </android.support.design.widget.CoordinatorLayout>

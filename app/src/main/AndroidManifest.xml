@@ -2,10 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.rightside.meutesoureiro_controlesuacarteira">
 
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="Meu Tesoureiro"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -24,14 +25,12 @@
             android:name=".activity.PrincipalActivity"
             android:label="@string/title_activity_principal"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activity.ReceitasActivity"
-            android:theme="@style/receitaTheme"/>
-
+        <activity android:name=".activity.ReceitasActivity"
+            android:theme="@style/receitaTheme" />
         <activity android:name=".activity.DespesasActivity"
-            android:theme="@style/despesaTheme"
-           />
+            android:theme="@style/despesaTheme">
 
+        </activity>
     </application>
 
 </manifest>

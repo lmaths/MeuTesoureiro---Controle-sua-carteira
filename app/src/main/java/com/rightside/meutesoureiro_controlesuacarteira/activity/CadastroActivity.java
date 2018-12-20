@@ -1,9 +1,8 @@
 package com.rightside.meutesoureiro_controlesuacarteira.activity;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,84 +41,81 @@ public class CadastroActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                validarCadastro();
+                String textoNome = campoNome.getText().toString();
+                String textoEmail = campoEmail.getText().toString();
+                String textoSenha = campoSenha.getText().toString();
+
+                //Validar se os campos foram preenchidos
+                if ( !textoNome.isEmpty() ){
+                    if ( !textoEmail.isEmpty() ){
+                        if ( !textoSenha.isEmpty() ){
+
+                            usuario = new Usuario();
+                            usuario.setNome( textoNome );
+                            usuario.setEmail( textoEmail );
+                            usuario.setSenha( textoSenha );
+                            cadastrarUsuario();
+
+                        }else {
+                            Toast.makeText(CadastroActivity.this,
+                                    "Preencha a senha!",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(CadastroActivity.this,
+                                "Preencha o email!",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    Toast.makeText(CadastroActivity.this,
+                            "Preencha o nome!",
+                            Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
 
     }
 
-
-
-
-    public void cadastrarUsuario() {
+    public void cadastrarUsuario(){
 
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
-        autenticacao.createUserWithEmailAndPassword(usuario.getEmail(), usuario.getSenha()
-
+        autenticacao.createUserWithEmailAndPassword(
+            usuario.getEmail(), usuario.getSenha()
         ).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
 
-                if (task.isSuccessful()) {
-                    String idUsuario = Base64Custom.codificarBase64(usuario.getEmail());
-                    usuario.setIdUsuario(idUsuario);
+                if ( task.isSuccessful() ){
+
+                    String idUsuario = Base64Custom.codificarBase64( usuario.getEmail() );
+                    usuario.setIdUsuario( idUsuario );
                     usuario.salvar();
                     finish();
 
-                 }else {
+                }else {
+
                     String excecao = "";
                     try {
-                        throw task.getException(); //tratando exceções
-                    } catch (FirebaseAuthWeakPasswordException e) {
-                       excecao = "Digite uma senha mais forte!";
-                    } catch (FirebaseAuthInvalidCredentialsException e) {
-                        excecao = "Por favor digite um email valido";
-
-                    }catch (FirebaseAuthUserCollisionException e) {
-                        excecao = "Essa conta já foi cadastrada";
-                    } catch (Exception e) {
-                        excecao = "Erro ao cadastrar usuário: " + e.getMessage();
+                        throw task.getException();
+                    }catch ( FirebaseAuthWeakPasswordException e){
+                        excecao = "Digite uma senha mais forte!";
+                    }catch ( FirebaseAuthInvalidCredentialsException e){
+                        excecao= "Por favor, digite um e-mail válido";
+                    }catch ( FirebaseAuthUserCollisionException e){
+                        excecao = "Este conta já foi cadastrada";
+                    }catch (Exception e){
+                        excecao = "Erro ao cadastrar usuário: "  + e.getMessage();
                         e.printStackTrace();
                     }
-                    Toast.makeText(CadastroActivity.this,excecao, Toast.LENGTH_LONG).show();
+
+                    Toast.makeText(CadastroActivity.this,
+                            excecao,
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
     }
-
-
-public void validarCadastro() {
-
-
-        String textoNome = campoNome.getText().toString();
-        String textoEmail = campoEmail.getText().toString();
-        String textoSenha = campoSenha.getText().toString();
-
-    if (!textoNome.isEmpty()) {
-        if (!textoEmail.isEmpty()) {
-            if(!textoSenha.isEmpty()){
-
-               //se não estiver vazio chama o metodo de cadastrar usuario
-                usuario = new Usuario();
-                usuario.setNome(textoNome);
-                usuario.setEmail(textoEmail);
-                usuario.setSenha(textoSenha);
-                cadastrarUsuario();
-
-            }else {
-                Toast.makeText(CadastroActivity.this,"Preencha a senha !", Toast.LENGTH_SHORT).show();
-            }
-
-        }else {
-            Toast.makeText(CadastroActivity.this,"Preencha o Email !", Toast.LENGTH_SHORT).show();
-        }
-
-    } else {
-        Toast.makeText(CadastroActivity.this,"Preencha o nome !", Toast.LENGTH_SHORT).show();
-    }
-
-}
 
 }

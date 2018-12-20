@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "1069269782668",
-    "firebase_url": "https://meutesoureiro.firebaseio.com",
-    "project_id": "meutesoureiro",
-    "storage_bucket": "meutesoureiro.appspot.com"
+    "project_number": "959404838861",
+    "firebase_url": "https://meutesoureiro-b173b.firebaseio.com",
+    "project_id": "meutesoureiro-b173b",
+    "storage_bucket": "meutesoureiro-b173b.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1069269782668:android:2b76a7b1a8906f47",
+        "mobilesdk_app_id": "1:959404838861:android:2b76a7b1a8906f47",
         "android_client_info": {
           "package_name": "com.rightside.meutesoureiro_controlesuacarteira"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1069269782668-iomq8o76njq1h5888n9bjco0eru9u2vc.apps.googleusercontent.com",
+          "client_id": "959404838861-ne0net7otsrpl37hpk7ch17be1oh8n6r.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.rightside.meutesoureiro_controlesuacarteira",
@@ -23,13 +23,13 @@
           }
         },
         {
-          "client_id": "1069269782668-838qrd7b1q4iefoq05laufto2e5s9ilq.apps.googleusercontent.com",
+          "client_id": "959404838861-smmmgmirdv52mqcaoovg1g15632l9h5d.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC5W1cqGi2T1Z5v-F2n4F0OQks4xGBoYyo"
+          "current_key": "AIzaSyATP5-7TmiJHKjnHa0QbvE9k6SBJP-yXu0"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "1069269782668-838qrd7b1q4iefoq05laufto2e5s9ilq.apps.googleusercontent.com",
+              "client_id": "959404838861-smmmgmirdv52mqcaoovg1g15632l9h5d.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
