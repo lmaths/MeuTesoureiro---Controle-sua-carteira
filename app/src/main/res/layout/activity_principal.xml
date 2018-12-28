@@ -24,6 +24,12 @@
 
     <include layout="@layout/content_principal" />
 
+    <Button
+        android:id="@+id/buttonGerar"
+        android:layout_width="165dp"
+        android:layout_height="78dp"
+        android:text="Button" />
+
     <com.github.clans.fab.FloatingActionMenu
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,14 +53,13 @@
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/menu_receita"
-            android:onClick="adicionarReceita"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="adicionarReceita"
             android:src="@drawable/ic_adicionar_branco_24dp"
             fab:fab_colorNormal="@color/colorPrimaryReceita"
             fab:fab_label="Receita"
-            fab:fab_size="mini"
-            />
+            fab:fab_size="mini" />
 
     </com.github.clans.fab.FloatingActionMenu>
 

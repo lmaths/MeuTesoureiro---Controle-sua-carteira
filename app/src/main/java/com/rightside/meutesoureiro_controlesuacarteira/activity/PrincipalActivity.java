@@ -1,25 +1,35 @@
 package com.rightside.meutesoureiro_controlesuacarteira.activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
@@ -30,9 +40,16 @@ import com.rightside.meutesoureiro_controlesuacarteira.helper.Base64Custom;
 import com.rightside.meutesoureiro_controlesuacarteira.model.Movimentacao;
 import com.rightside.meutesoureiro_controlesuacarteira.model.Usuario;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+
 
 public class PrincipalActivity extends AppCompatActivity {
 
@@ -41,6 +58,7 @@ public class PrincipalActivity extends AppCompatActivity {
     private Double despesaTotal = 0.0;
     private Double receitaTotal = 0.0;
     private Double resumoUsuario = 0.0;
+
 
     private FirebaseAuth autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
     private DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
@@ -54,6 +72,7 @@ public class PrincipalActivity extends AppCompatActivity {
     private Movimentacao movimentacao;
     private DatabaseReference movimentacaoRef;
     private String mesAnoSelecionado;
+    private Button gerar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +86,7 @@ public class PrincipalActivity extends AppCompatActivity {
         textoSaudacao = findViewById(R.id.textSaudacao);
         calendarView = findViewById(R.id.calendarView);
         recyclerView = findViewById(R.id.recyclerMovimentos);
+        gerar = findViewById(R.id.buttonGerar);
         configuraCalendarView();
         swipe();
 
@@ -79,8 +99,18 @@ public class PrincipalActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter( adapterMovimentacao );
 
+        gerar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                gerarRelatorio();
+            }
+        });
+
 
     }
+
+
 
     public void swipe(){
 
@@ -280,6 +310,8 @@ public class PrincipalActivity extends AppCompatActivity {
         startActivity(new Intent(this, ReceitasActivity.class));
     }
 
+
+
     public void configuraCalendarView(){
 
         CharSequence meses[] = {"Janeiro","Fevereiro", "Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"};
@@ -317,7 +349,71 @@ public class PrincipalActivity extends AppCompatActivity {
     }
 
 
+    private void gerarRelatorio() {
 
+
+
+        String emailUsuario = autenticacao.getCurrentUser().getEmail();
+        Double nomeUsuario = resumoUsuario;
+        String idUsuario = Base64Custom.codificarBase64(emailUsuario);
+        movimentacaoRef = firebaseRef.child("movimentacao")
+                .child(idUsuario)
+                .child(mesAnoSelecionado);
+
+
+        usuarioRef = firebaseRef.child("usuarios").child(idUsuario);
+
+            if (autenticacao.getCurrentUser()!=null) {
+
+                if (movimentacaoRef != null) {
+
+
+
+                    String arquivo_gerado = Environment.getExternalStorageDirectory().toString() + "/relatorio.pdf";
+
+
+                    Document doc = null;
+                    OutputStream os = null;
+
+                    try {
+                        doc = new Document(PageSize.A4, 42, 42, 42, 42);
+
+                        os = new FileOutputStream(arquivo_gerado);
+                        PdfWriter.getInstance(doc, os);
+                        doc.open();
+                        Paragraph h = new Paragraph("RELATÓRIO TOTAL MEU TESOUREIRO - CONTROLE SUA CARTEIRA " +
+                                "");
+                        Paragraph l = new Paragraph("Despesa total até o momento: " + String.valueOf(despesaTotal));
+                        Paragraph z = new Paragraph("Receita total até o momento: " + String.valueOf(receitaTotal));
+
+
+                        Paragraph g = new Paragraph("Email: " + emailUsuario);
+                        Paragraph i = new Paragraph("Balanço Total " + nomeUsuario);
+
+
+
+                        doc.add(h);
+                        doc.add(g);
+                        doc.add(i);
+                        doc.add(z);
+                        doc.add(l);
+                        doc.close();
+                        os.close();
+
+                        Toast.makeText(getBaseContext(), "PDF Gerado com sucesso", Toast.LENGTH_LONG).show();
+                    } catch (FileNotFoundException erro) {
+                        Toast.makeText(getBaseContext(), "Erro: " + erro, Toast.LENGTH_LONG).show();
+                    } catch (DocumentException erro) {
+                        Toast.makeText(getBaseContext(), "Erro: " + erro, Toast.LENGTH_LONG).show();
+                    } catch (IOException erro) {
+                        Toast.makeText(getBaseContext(), "Erro: " + erro, Toast.LENGTH_LONG).show();
+                    }
+
+
+                }
+            }
 
     }
+}
+
 
