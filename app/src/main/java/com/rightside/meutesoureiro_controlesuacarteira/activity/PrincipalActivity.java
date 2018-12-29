@@ -19,6 +19,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -58,6 +65,14 @@ public class PrincipalActivity extends AppCompatActivity {
     private Double despesaTotal = 0.0;
     private Double receitaTotal = 0.0;
     private Double resumoUsuario = 0.0;
+    private AdView mAdView;
+
+    private InterstitialAd mInterstitialAd;
+    private InterstitialAd mInterstitialAd2;
+    private InterstitialAd mInterstitialAd3;
+
+
+
 
 
     private FirebaseAuth autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
@@ -81,12 +96,75 @@ public class PrincipalActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Meu Tesoureiro");
         setSupportActionBar(toolbar);
+        MobileAds.initialize(this,"ca-app-pub-6000601527647342~5991960457");
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
+        mInterstitialAd.setAdListener(new AdListener() {
+                                          @Override
+                                          public void onAdClosed() {
+
+                                              startActivity(new Intent(PrincipalActivity.this, DespesasActivity.class));
+                                              mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build());
+                                          }
+                                      }
+
+
+
+
+        );
+
+
+        mInterstitialAd2 = new InterstitialAd(this);
+        mInterstitialAd2.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd2.loadAd(new AdRequest.Builder().build());
+
+        mInterstitialAd2.setAdListener(new AdListener() {
+                                          @Override
+                                          public void onAdClosed() {
+
+                                              startActivity(new Intent(PrincipalActivity.this, ReceitasActivity.class));
+                                              mInterstitialAd2.loadAd(new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build());
+                                          }
+                                      }
+
+
+
+
+        );
+
+        mInterstitialAd3 = new InterstitialAd(this);
+        mInterstitialAd3.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd3.loadAd(new AdRequest.Builder().build());
+
+        mInterstitialAd3.setAdListener(new AdListener() {
+                                           @Override
+                                           public void onAdClosed() {
+
+                                               gerarRelatorio();
+                                               mInterstitialAd2.loadAd(new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build());
+                                           }
+                                       }
+
+
+
+
+        );
+
+
+
+
 
         textoSaldo = findViewById(R.id.textSaldo);
         textoSaudacao = findViewById(R.id.textSaudacao);
         calendarView = findViewById(R.id.calendarView);
         recyclerView = findViewById(R.id.recyclerMovimentos);
-        gerar = findViewById(R.id.buttonGerar);
+
         configuraCalendarView();
         swipe();
 
@@ -99,13 +177,7 @@ public class PrincipalActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter( adapterMovimentacao );
 
-        gerar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                gerarRelatorio();
-            }
-        });
 
 
     }
@@ -303,11 +375,21 @@ public class PrincipalActivity extends AppCompatActivity {
     }
 
     public void adicionarDespesa(View view){
-        startActivity(new Intent(this, DespesasActivity.class));
+        if(mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        } else {
+            startActivity(new Intent(this, DespesasActivity.class));
+        }
+
     }
 
     public void adicionarReceita(View view){
-        startActivity(new Intent(this, ReceitasActivity.class));
+        if(mInterstitialAd2.isLoaded()) {
+            mInterstitialAd2.show();
+        } else {
+            startActivity(new Intent(this, ReceitasActivity.class));
+        }
+
     }
 
 
@@ -400,7 +482,7 @@ public class PrincipalActivity extends AppCompatActivity {
                         doc.close();
                         os.close();
 
-                        Toast.makeText(getBaseContext(), "PDF Gerado com sucesso", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getBaseContext(), "Relatorio gerado, salvo no dispositivo", Toast.LENGTH_LONG).show();
                     } catch (FileNotFoundException erro) {
                         Toast.makeText(getBaseContext(), "Erro: " + erro, Toast.LENGTH_LONG).show();
                     } catch (DocumentException erro) {
@@ -412,6 +494,19 @@ public class PrincipalActivity extends AppCompatActivity {
 
                 }
             }
+
+    }
+
+    public void fazerRelatorio(View view) {
+
+        if(mInterstitialAd3.isLoaded()) {
+            mInterstitialAd3.show();
+        } else {
+            gerarRelatorio();
+        }
+
+
+
 
     }
 }
