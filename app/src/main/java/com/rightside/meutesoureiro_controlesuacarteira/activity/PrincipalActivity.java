@@ -3,8 +3,13 @@ package com.rightside.meutesoureiro_controlesuacarteira.activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,6 +45,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
+import com.rightside.meutesoureiro_controlesuacarteira.Manifest;
 import com.rightside.meutesoureiro_controlesuacarteira.R;
 import com.rightside.meutesoureiro_controlesuacarteira.adapter.AdapterMovimentacao;
 import com.rightside.meutesoureiro_controlesuacarteira.config.ConfiguracaoFirebase;
@@ -87,7 +93,8 @@ public class PrincipalActivity extends AppCompatActivity {
     private Movimentacao movimentacao;
     private DatabaseReference movimentacaoRef;
     private String mesAnoSelecionado;
-    private Button gerar;
+
+    private static final int REQUEST_PERMISSAO_ARQUIVOS = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +103,11 @@ public class PrincipalActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Meu Tesoureiro");
         setSupportActionBar(toolbar);
+
+
+        verificaPermissaoArquivos();
+
+
         MobileAds.initialize(this,"ca-app-pub-6000601527647342~5991960457");
         mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -526,6 +538,35 @@ public class PrincipalActivity extends AppCompatActivity {
         email.setType("message/rfc822");
 
         startActivity(Intent.createChooser(email, "Escolha aplicativo de e-mail!"));
+    }
+
+    public void verificaPermissaoArquivos() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(PrincipalActivity.this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSAO_ARQUIVOS);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        switch (requestCode) {
+
+            case REQUEST_PERMISSAO_ARQUIVOS: {
+
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                } else {
+                    Toast.makeText(getBaseContext(), "Permissão para arquivos foi negada", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+                return;
+            }
+        }
+
     }
 }
 
