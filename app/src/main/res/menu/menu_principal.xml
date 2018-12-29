@@ -9,4 +9,11 @@
         app:showAsAction="never"
         />
 
+    <item
+        android:id="@+id/menuSugestao"
+        android:orderInCategory="100"
+        android:title="Sugestão/Critica"
+        app:showAsAction="never"
+        />
+
 </menu>

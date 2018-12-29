@@ -2,9 +2,7 @@ package com.rightside.meutesoureiro_controlesuacarteira.helper;
 
 import java.text.SimpleDateFormat;
 
-/**
- * Created by jamiltondamasceno
- */
+
 
 public class DateCustom {
 

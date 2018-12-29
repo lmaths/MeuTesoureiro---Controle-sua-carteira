@@ -370,6 +370,9 @@ public class PrincipalActivity extends AppCompatActivity {
                 startActivity(new Intent(this, LoginActivity.class));
                 finish();
                 break;
+            case R.id.menuSugestao:
+                composeEmail();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -508,6 +511,21 @@ public class PrincipalActivity extends AppCompatActivity {
 
 
 
+    }
+
+    public void composeEmail() {
+
+        String to = "contatorightside@gmail.com";
+        String subject = "Gostaria de enviar uma sugestão/critica para o aplicativo Meu Tesoureiro";
+        String message = "Oi me chamo   , gostaria que fosse feito...";
+
+        Intent email = new Intent(Intent.ACTION_SEND);
+        email.putExtra(Intent.EXTRA_EMAIL, new String[]{ to});
+        email.putExtra(Intent.EXTRA_SUBJECT, subject);
+        email.putExtra(Intent.EXTRA_TEXT, message);
+        email.setType("message/rfc822");
+
+        startActivity(Intent.createChooser(email, "Escolha aplicativo de e-mail!"));
     }
 }
 
