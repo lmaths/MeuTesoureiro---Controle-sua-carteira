@@ -5,9 +5,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 import com.rightside.meutesoureiro_controlesuacarteira.config.ConfiguracaoFirebase;
 
-/**
- * Created by jamiltondamasceno
- */
 
 public class Usuario {
 
@@ -27,6 +24,9 @@ public class Usuario {
                 .child( this.idUsuario )
                 .setValue( this );
     }
+
+
+
 
     public double getReceitaTotal() {
         return receitaTotal;

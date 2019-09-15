@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -42,10 +43,13 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.ValueDependentColor;
+import com.jjoe64.graphview.series.BarGraphSeries;
+import com.jjoe64.graphview.series.DataPoint;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
-import com.rightside.meutesoureiro_controlesuacarteira.Manifest;
 import com.rightside.meutesoureiro_controlesuacarteira.R;
 import com.rightside.meutesoureiro_controlesuacarteira.adapter.AdapterMovimentacao;
 import com.rightside.meutesoureiro_controlesuacarteira.config.ConfiguracaoFirebase;
@@ -95,6 +99,7 @@ public class PrincipalActivity extends AppCompatActivity {
     private String mesAnoSelecionado;
 
     private static final int REQUEST_PERMISSAO_ARQUIVOS = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,6 +193,7 @@ public class PrincipalActivity extends AppCompatActivity {
         recyclerView.setLayoutManager( layoutManager );
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter( adapterMovimentacao );
+
 
 
 
@@ -353,6 +359,31 @@ public class PrincipalActivity extends AppCompatActivity {
                     textoSaudacao.setText("Olá, " + usuario.getNome());
                     textoSaldo.setText("R$ " + resultadoFormatado);
 
+
+                    double saldo = receitaTotal - despesaTotal;
+
+                    GraphView graph = findViewById(R.id.graph);
+                    BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint[] {
+                            new DataPoint(0,receitaTotal ),
+                            new DataPoint(1, despesaTotal),
+                            new DataPoint(2, saldo)
+
+
+
+                    });
+
+                    series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
+                        @Override
+                        public int get(DataPoint data) {
+                            return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
+                        }
+                    });
+                    series.setDrawValuesOnTop(true);
+                    series.setValuesOnTopColor(Color.RED);
+                    series.setSpacing(1);
+                    graph.addSeries(series);
+
+
                 }
 
 
@@ -385,6 +416,10 @@ public class PrincipalActivity extends AppCompatActivity {
             case R.id.menuSugestao:
                 composeEmail();
                 break;
+                case R.id.menuApagar:
+            Movimentacao movimentacao = new Movimentacao();
+            movimentacao.apagar();
+
         }
         return super.onOptionsItemSelected(item);
     }

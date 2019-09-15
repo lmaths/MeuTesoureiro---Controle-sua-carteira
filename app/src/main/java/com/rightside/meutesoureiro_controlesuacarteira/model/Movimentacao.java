@@ -3,10 +3,12 @@ package com.rightside.meutesoureiro_controlesuacarteira.model;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.rightside.meutesoureiro_controlesuacarteira.config.ConfiguracaoFirebase;
 import com.rightside.meutesoureiro_controlesuacarteira.helper.Base64Custom;
 import com.rightside.meutesoureiro_controlesuacarteira.helper.DateCustom;
 
+import java.util.EventListener;
 
 
 public class Movimentacao {
@@ -19,6 +21,23 @@ public class Movimentacao {
     private String key;
 
     public Movimentacao() {
+    }
+
+    public void apagar() {
+        FirebaseAuth autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+        String idUsuario = Base64Custom.codificarBase64( autenticacao.getCurrentUser().getEmail() );
+        DatabaseReference firebase = ConfiguracaoFirebase.getFirebaseDatabase();
+        firebase.child("movimentacao").child(idUsuario).removeValue();
+
+        DatabaseReference apagarDespesa = ConfiguracaoFirebase.getFirebaseDatabase();
+        apagarDespesa.child("usuarios")
+                .child( idUsuario )
+                .child("despesaTotal").removeValue();
+
+        DatabaseReference apagarReceita = ConfiguracaoFirebase.getFirebaseDatabase();
+        apagarReceita.child("usuarios")
+                .child( idUsuario )
+                .child("receitaTotal").removeValue();
     }
 
     public void salvar(String dataEscolhida){

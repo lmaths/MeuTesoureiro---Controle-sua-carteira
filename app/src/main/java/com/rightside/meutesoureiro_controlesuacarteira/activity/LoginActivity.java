@@ -22,7 +22,7 @@ import com.rightside.meutesoureiro_controlesuacarteira.model.Usuario;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText campoEmail, campoSenha;
-    private Button botaoEntrar;
+    private Button botaoEntrar, buttonMissPassword;
     private Usuario usuario;
     private FirebaseAuth autenticacao;
 
@@ -34,6 +34,14 @@ public class LoginActivity extends AppCompatActivity {
         campoEmail = findViewById(R.id.editEmail);
         campoSenha = findViewById(R.id.editSenha);
         botaoEntrar = findViewById(R.id.buttonEntrar);
+        buttonMissPassword = findViewById(R.id.buttonMissPassword);
+        buttonMissPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), PasswordResetActivity.class);
+                startActivity(i);
+            }
+        });
 
         botaoEntrar.setOnClickListener(new View.OnClickListener() {
             @Override

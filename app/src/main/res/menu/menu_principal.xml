@@ -16,4 +16,13 @@
         app:showAsAction="never"
         />
 
+
+    <item
+        android:id="@+id/menuApagar"
+        android:orderInCategory="100"
+        android:title="Apagar Movimentações"
+        app:showAsAction="never"
+        />
+
+
 </menu>
